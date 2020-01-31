@@ -30,8 +30,8 @@ def run_game():
         gf.check_events(ai_settings, screen, ship, bullets)
         # remake the location
         ship.update()
-        gf.update_bullet(bullets)
-        gf.update_aliens(aliens)
+        gf.update_bullet(ai_settings,screen,ship,aliens,bullets)
+        gf.update_aliens(ai_settings,aliens)
         # fill the screen with background color
         # let the recently draw screen visible
         gf.update_screen(ai_settings, screen, ship, aliens,bullets)
