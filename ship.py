@@ -38,3 +38,6 @@ class Ship():
             self.center -= self.ai_settings.screen_width
         # update the rect by self.center
         self.rect.centerx = self.center
+
+    def center_ship(self):
+        self.center=self.screen_rect.centerx

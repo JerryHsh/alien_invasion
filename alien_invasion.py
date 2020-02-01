@@ -6,6 +6,7 @@ from alien import Alien
 from settings import Settings
 from ship import Ship
 import game_functions as gf
+from game_stats import Gamestats
 
 
 def run_game():
@@ -24,14 +25,17 @@ def run_game():
     gf.create_fleet(ai_settings,screen,ship,aliens)
     #create an alien object
     alien=Alien(ai_settings,screen)
+    #statistics
+    stats=Gamestats(ai_settings)
     # begin the main loop
     while True:
         # survalence the keyboard and the mouse
         gf.check_events(ai_settings, screen, ship, bullets)
-        # remake the location
-        ship.update()
-        gf.update_bullet(ai_settings,screen,ship,aliens,bullets)
-        gf.update_aliens(ai_settings,aliens)
+        if stats.game_active==True:
+            # remake the location
+            ship.update()
+            gf.update_bullet(ai_settings,screen,ship,aliens,bullets)
+            gf.update_aliens(ai_settings,stats,screen,ship,aliens,bullets)
         # fill the screen with background color
         # let the recently draw screen visible
         gf.update_screen(ai_settings, screen, ship, aliens,bullets)
