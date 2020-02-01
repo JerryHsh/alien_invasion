@@ -20,3 +20,5 @@ class Settings():
         self.fleet_drop_speed = 10
         # alien direction  1 means right -1 means left
         self.fleet_direction = 1
+        #ship limit
+        self.ship_limit=3
