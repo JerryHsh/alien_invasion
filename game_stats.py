@@ -4,8 +4,10 @@ class Gamestats():
         """initialize the information"""
         self.ai_settings=ai_settings
         self.reset_stats()
-        self.game_active=True
+        #make the game not active at first
+        self.game_active=False
     
     def reset_stats(self):
         """reset the changable information when game is running"""
         self.ships_left=self.ai_settings.ship_limit
+    
