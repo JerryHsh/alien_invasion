@@ -2,6 +2,7 @@ import sys
 import pygame
 from pygame.sprite import Group
 from alien import Alien
+from button import Button
 
 from settings import Settings
 from ship import Ship
@@ -27,10 +28,12 @@ def run_game():
     alien=Alien(ai_settings,screen)
     #statistics
     stats=Gamestats(ai_settings)
+    #create the play button
+    play_button=Button(ai_settings,screen,"play")
     # begin the main loop
     while True:
         # survalence the keyboard and the mouse
-        gf.check_events(ai_settings, screen, ship, bullets)
+        gf.check_events(ai_settings, screen,stats,play_button, ship, bullets)
         if stats.game_active==True:
             # remake the location
             ship.update()
@@ -38,7 +41,8 @@ def run_game():
             gf.update_aliens(ai_settings,stats,screen,ship,aliens,bullets)
         # fill the screen with background color
         # let the recently draw screen visible
-        gf.update_screen(ai_settings, screen, ship, aliens,bullets)
+        gf.update_screen(ai_settings, screen,stats, ship, aliens,bullets,play_button)
 
 
 run_game()
+

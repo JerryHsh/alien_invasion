@@ -6,7 +6,6 @@ from random import randint
 from time import sleep
 
 
-
 def fire_bullet(ai_settings, screen, ship, bullets):
     # create a bullet
     if len(bullets) < ai_settings.bullet_allowed:
@@ -37,7 +36,7 @@ def check_keyup_event(event, ship):
         ship.moving_left = False
 
 
-def check_events(ai_settings, screen, ship, bullets):
+def check_events(ai_settings, screen, stats, play_button, ship, bullets):
     """respond to the event and the mouse action"""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -48,9 +47,18 @@ def check_events(ai_settings, screen, ship, bullets):
             check_keydown_events(event, ai_settings, screen, ship, bullets)
         elif event.type == pygame.KEYUP:
             check_keyup_event(event, ship)
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            check_play_button(stats, play_button, mouse_x, mouse_y)
 
 
-def update_screen(ai_settings, screen, ship, aliens, bullets):
+def check_play_button(stats, play_button, mouse_x, mouse_y):
+    """start the game when the player click the button"""
+    if play_button.rect.collidepoint(mouse_x, mouse_y):
+        stats.game_active = True
+
+
+def update_screen(ai_settings, screen, stats, ship, aliens, bullets, play_button):
     """update the graph on the screen"""
     # fill the screen every time when looping
     screen.fill(ai_settings.bg_color)
@@ -59,6 +67,8 @@ def update_screen(ai_settings, screen, ship, aliens, bullets):
     ship.blitme()
     aliens.draw(screen)
     # let the recently draw screen visible
+    if not stats.game_active:
+        play_button.draw_button()
     pygame.display.flip()
 
 
@@ -147,12 +157,12 @@ def update_aliens(ai_settings, stats, screen, ship, aliens, bullets):
     # when there is no collision the function return None
     if pygame.sprite.spritecollideany(ship, aliens):
         ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
-    check_aliens_bottom(ai_settings,stats,screen,ship,aliens,bullets)
+    check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets)
 
 
 def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
     """respond to the ship hit event"""
-    if stats.ships_left>0:
+    if stats.ships_left > 0:
         # ship left minus 1
         stats.ships_left -= 1
         # clear the aliens and the bullets
@@ -164,7 +174,8 @@ def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
         # pause
         sleep(0.5)
     else:
-        stats.game_active=False
+        stats.game_active = False
+
 
 def check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets):
     """check if there are aliens hit the bottom of the screen"""
